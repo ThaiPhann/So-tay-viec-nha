@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sổ tay việc nhà — bản demo</title>
+<style>
+  :root{
+    --bg:#f2f5f8;
+    --card:#ffffff;
+    --text:#1b2430;
+    --muted:#67748a;
+    --line:#e3e8ef;
+    --accent:#2563eb;
+    --accent-soft:#e8f0fe;
+    --ok:#15803d;
+    --ok-soft:#e7f6ec;
+    --warn:#b45309;
+    --warn-soft:#fdf1dd;
+    --bad:#c62828;
+    --bad-soft:#fdeaea;
+    --radius:14px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  /* Thuoc tinh "hidden" cua HTML phai duoc ua doi cho moi theo display:flex/grid ben duoi */
+  [hidden]{ display:none !important; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    font-size:18px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .logo{
+    width:52px; height:52px;
+    flex:0 0 auto;
+    display:grid; place-items:center;
+    font-size:28px;
+    background:var(--accent-soft);
+    border-radius:14px;
+  }
+  h1{
+    font-size:32px;
+    line-height:1.15;
+    margin:0;
+    letter-spacing:-0.5px;
+  }
+  .sub{
+    margin:2px 0 0;
+    color:var(--muted);
+    font-size:16px;
+  }
+  .head-right{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .who-chip{
+    display:flex; align-items:center; gap:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:8px 14px;
+    font-size:16px;
+    font-weight:600;
+    color:#4b5a70;
+  }
+  .who-chip .dot{ width:9px; height:9px; border-radius:50%; background:var(--ok); }
+  .who-chip .dot.off{ background:var(--bad); }
+  .icon-btn{
+    width:46px; height:46px;
+    min-height:0;
+    padding:0;
+    border-radius:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    font-size:20px;
+  }
+
+  /* ---------- Banner ---------- */
+  .banner{
+    background:var(--warn-soft);
+    border:1px solid #f0dcb4;
+    color:var(--warn);
+    border-radius:var(--radius);
+    padding:14px 18px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    font-size:16px;
+  }
+  .banner.bad{ background:var(--bad-soft); border-color:#f2c9c9; color:var(--bad); }
+  .banner .spacer{ flex:1 1 auto; }
+  .banner button{ min-height:40px; padding:8px 14px; font-size:15px; background:#fff; border:1px solid currentColor; color:inherit; }
+
+  /* ---------- Progress ---------- */
+  .progress{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:20px;
+  }
+  .progress-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .progress-head strong{ font-size:20px; }
+  .progress-head span{ color:var(--muted); font-size:16px; }
+  .bar{
+    height:14px;
+    background:#e9edf3;
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .bar > i{
+    display:block;
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#22c55e,#15803d);
+    border-radius:99px;
+    transition:width .25s ease;
+  }
+
+  /* ---------- Add form ---------- */
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:20px;
+  }
+  .panel h2{
+    font-size:20px;
+    margin:0 0 14px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:12px;
+    align-items:end;
+  }
+  label{
+    display:block;
+    font-size:15px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  input, select, textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:18px;
+    color:var(--text);
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fbfcfe;
+    min-height:48px;
+  }
+  input:focus, select:focus{
+    outline:2px solid var(--accent);
+    outline-offset:1px;
+    background:#fff;
+  }
+
+  button{
+    font-family:inherit;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:10px;
+    border:1px solid transparent;
+    padding:11px 18px;
+    min-height:48px;
+    transition:filter .15s ease, background .15s ease;
+  }
+  button:hover{ filter:brightness(0.96); }
+
+  .btn-primary{ background:var(--accent); color:#fff; }
+  .btn-primary:disabled{ background:#c7d2e0; cursor:not-allowed; }
+  .btn-ghost{
+    background:#fff;
+    color:var(--muted);
+    border-color:var(--line);
+  }
+  .btn-danger{
+    background:#fff;
+    color:var(--bad);
+    border-color:#f2c9c9;
+  }
+  .btn-block{ width:100%; }
+
+  .row-actions{ display:flex; gap:10px; margin-top:14px; }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+    margin-bottom:16px;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    background:#e6eaf0;
+    padding:5px;
+    border-radius:12px;
+  }
+  .tabs button{
+    background:transparent;
+    color:var(--muted);
+    border:none;
+    padding:8px 16px;
+    min-height:42px;
+    font-size:17px;
+  }
+  .tabs button.active{
+    background:#fff;
+    color:var(--accent);
+    box-shadow:0 1px 3px rgba(0,0,0,.12);
+  }
+  .toolbar .spacer{ flex:1 1 auto; }
+  .toolbar .search{ width:220px; }
+  .toolbar select{ width:auto; min-width:150px; }
+
+  /* ---------- Task list ---------- */
+  ul.list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .task{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:6px solid var(--accent);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .task:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(20,30,50,.08);
+  }
+  .task.is-done{ border-left-color:var(--ok); }
+  .task.is-overdue{ border-left-color:var(--bad); }
+
+  .check{
+    flex:0 0 auto;
+    width:44px; height:44px;
+    min-height:0;
+    border-radius:50%;
+    border:2px solid #c3ccd9;
+    background:#fff;
+    color:#fff;
+    font-size:22px;
+    line-height:1;
+    display:grid;
+    place-items:center;
+    padding:0;
+  }
+  .task.is-done .check{
+    background:var(--ok);
+    border-color:var(--ok);
+  }
+
+  .body{ flex:1 1 auto; min-width:0; }
+  .name{
+    font-size:22px;
+    font-weight:700;
+    word-break:break-word;
+  }
+  .task.is-done .name{
+    text-decoration:line-through;
+    text-decoration-thickness:2.5px;
+    color:#8b96a6;
+  }
+  .meta{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    align-items:center;
+  }
+  .who{ font-weight:600; color:#4b5a70; }
+
+  .badges{ flex:0 0 auto; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .badge{
+    font-size:14px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:99px;
+    white-space:nowrap;
+  }
+  .badge.todo{ background:#eef1f6; color:#5b6779; }
+  .badge.done{ background:var(--ok-soft); color:var(--ok); }
+  .badge.due{ background:var(--warn-soft); color:var(--warn); }
+  .badge.late{ background:var(--bad-soft); color:var(--bad); }
+
+  .tools{ display:flex; gap:8px; flex:0 0 auto; }
+  .tools button{
+    min-height:44px;
+    padding:8px 14px;
+    font-size:16px;
+    font-weight:700;
+    background:#fff;
+    border:1px solid var(--line);
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .tools button:hover{ color:var(--text); }
+  .tools button.sua{ color:var(--accent); border-color:#c4d6f8; }
+  .tools button.sua:hover{ background:var(--accent-soft); color:var(--accent); }
+  .tools button.xoa{ color:var(--bad); border-color:#f2c9c9; }
+  .tools button.xoa:hover{ background:var(--bad-soft); color:var(--bad); }
+
+  .empty{
+    background:var(--card);
+    border:1px dashed #cfd8e3;
+    border-radius:var(--radius);
+    padding:44px 20px;
+    text-align:center;
+    color:var(--muted);
+  }
+  .empty .big{ font-size:40px; margin-bottom:10px; }
+
+  /* ---------- Modal ---------- */
+  .backdrop{
+    position:fixed; inset:0;
+    background:rgba(18,25,38,.5);
+    display:flex; align-items:center; justify-content:center;
+    padding:18px;
+    z-index:50;
+    overflow:auto;
+  }
+  .backdrop[hidden]{ display:none; }
+  .modal{
+    background:var(--card);
+    border-radius:18px;
+    padding:24px;
+    width:100%;
+    max-width:520px;
+    box-shadow:0 24px 60px rgba(10,20,40,.35);
+  }
+  .modal h2{ margin:0 0 18px; font-size:24px; }
+  .modal .grid{ grid-template-columns:1fr; gap:14px; }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:22px;
+    flex-wrap:wrap;
+  }
+  .modal-actions .push{ margin-right:auto; }
+  .modal h3{ font-size:18px; margin:22px 0 10px; }
+  .modal h3:first-of-type{ margin-top:0; }
+
+  /* ---------- Màn hình đăng nhập ---------- */
+  .login-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:var(--bg);
+  }
+  .login-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:0 18px 50px rgba(20,30,50,.12);
+    padding:32px;
+    width:100%;
+    max-width:440px;
+  }
+  .login-card .logo{
+    width:64px; height:64px;
+    font-size:34px;
+    border-radius:18px;
+    margin-bottom:14px;
+  }
+  .login-card h2{ font-size:26px; margin:0 0 4px; }
+  .login-card .sub{ margin:0 0 20px; color:var(--muted); font-size:16px; }
+  .field{ margin-bottom:14px; }
+  .login-err{
+    background:var(--bad-soft);
+    border:1px solid #f2c9c9;
+    color:var(--bad);
+    border-radius:10px;
+    padding:10px 14px;
+    font-size:16px;
+    margin-bottom:14px;
+  }
+  .hint{
+    margin:16px 0 0;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+  }
+  .hint code{
+    background:#eef1f6;
+    border-radius:6px;
+    padding:1px 6px;
+    font-size:14px;
+  }
+
+  /* ---------- Danh sách thành viên trong cài đặt ---------- */
+  .member-list{ list-style:none; margin:0 0 12px; padding:0; }
+  .member-list li{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .member-list li .spacer{ flex:1 1 auto; }
+  .member-list button{
+    min-height:34px; width:34px; padding:0;
+    background:#fff; border:1px solid #f2c9c9; color:var(--bad); font-size:15px;
+  }
+  .member-add{ display:flex; gap:10px; }
+  .member-add input{ flex:1 1 auto; }
+  .member-add button{ flex:0 0 auto; white-space:nowrap; }
+
+  footer{
+    margin-top:34px;
+    text-align:center;
+    color:var(--muted);
+    font-size:15px;
+  }
+  footer button{
+    background:transparent;
+    border:none;
+    color:var(--accent);
+    text-decoration:underline;
+    padding:4px 8px;
+    min-height:32px;
+    font-size:15px;
+  }
+
+  @media (max-width:680px){
+    .grid{ grid-template-columns:1fr; }
+    .toolbar .search{ width:100%; }
+    .task{ flex-wrap:wrap; }
+    .badges{ flex-direction:row; align-items:center; width:100%; order:3; }
+    .tools{ order:4; width:100%; }
+    .tools button{ flex:1 1 auto; min-height:48px; font-size:17px; }
+    h1{ font-size:26px; }
+    .head-right .who-chip span.name{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= MÀN HÌNH ĐĂNG NHẬP ================= -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="logo">🏠</div>
+    <h2>Sổ tay việc nhà</h2>
+    <p class="sub" id="loginSub">Chọn tên của bạn và nhập mã gia đình để vào.</p>
+
+    <div id="loginErr" class="login-err" hidden></div>
+
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <label for="loginTen">Bạn là ai?</label>
+        <select id="loginTen"></select>
+      </div>
+      <div class="field">
+        <label for="loginKhoa">Mã gia đình</label>
+        <input id="loginKhoa" type="password" placeholder="Mã do máy chủ in ra lúc khởi động" required>
+      </div>
+      <button type="submit" class="btn-primary btn-block" id="loginBtn">Vào sổ tay</button>
+    </form>
+
+    <p class="hint">
+      Chưa biết mã? Mở cửa sổ đen nơi đang chạy máy chủ, hoặc xem file
+      <code>ma-gia-dinh.txt</code> nằm cạnh <code>server.js</code>.
+    </p>
+    <p class="hint" id="loginRetryWrap" hidden>
+      <button type="button" class="btn-ghost" id="loginRetry">🔄 Thử kết nối lại với máy chủ</button>
+    </p>
+  </div>
+</div>
+
+<!-- ================= NỘI DUNG SỔ TAY ================= -->
+<div class="wrap" id="app" hidden>
+
+  <header>
+    <div class="logo">🏠</div>
+    <div>
+      <h1>Sổ tay việc nhà</h1>
+      <p class="sub">Việc nhà của cả nhà, ai làm gì và hạn đến khi nào.</p>
+    </div>
+    <div class="head-right">
+      <div class="who-chip" title="Bạn đang đăng nhập">
+        <span class="dot" id="syncDot"></span>
+        <span class="name" id="userName">—</span>
+      </div>
+      <button type="button" class="icon-btn" id="settingBtn" title="Cài đặt" aria-label="Cài đặt">⚙️</button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden>
+    <span id="bannerText"></span>
+    <span class="spacer"></span>
+    <button type="button" id="bannerRetry">🔄 Thử lại</button>
+  </div>
+
+  <section class="progress">
+    <div class="progress-head">
+      <strong id="progressText">0 / 0 việc đã xong</strong>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="bar"><i id="progressBar"></i></div>
+  </section>
+
+  <section class="panel">
+    <h2>➕ Thêm việc mới</h2>
+    <form id="addForm" autocomplete="off">
+      <div class="grid">
+        <div>
+          <label for="addTen">Tên việc</label>
+          <input id="addTen" type="text" placeholder="Ví dụ: Rửa bát" required>
+        </div>
+        <div>
+          <label for="addNguoi">Người làm</label>
+          <select id="addNguoi"></select>
+        </div>
+        <div>
+          <label for="addHan">Hạn chót</label>
+          <input id="addHan" type="date">
+        </div>
+      </div>
+      <div class="row-actions">
+        <button type="submit" class="btn-primary" id="addBtn">Thêm việc</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="toolbar">
+    <div class="tabs" id="tabs">
+      <button type="button" class="active" data-filter="all">Tất cả</button>
+      <button type="button" data-filter="todo">Chưa làm</button>
+      <button type="button" data-filter="done">Đã xong</button>
+    </div>
+    <div class="spacer"></div>
+    <input class="search" id="search" type="search" placeholder="Tìm việc...">
+    <select id="filterPerson"></select>
+  </div>
+
+  <ul class="list" id="list"></ul>
+
+  <div class="empty" id="empty" hidden>
+    <div class="big">🧹</div>
+    <div id="emptyText">Chưa có việc nào. Thêm việc đầu tiên ở ô phía trên nhé.</div>
+  </div>
+
+  <footer>
+    Dữ liệu nằm trên máy chủ trong nhà — mọi người dùng chung một danh sách.<br>
+    <button type="button" id="resetBtn">Khôi phục 3 việc mẫu</button>
+  </footer>
+</div>
+
+<!-- ================= MODAL SỬA VIỆC ================= -->
+<div class="backdrop" id="backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Sửa việc</h2>
+    <form id="editForm" autocomplete="off">
+      <div class="grid">
+        <div>
+          <label for="editTen">Tên việc</label>
+          <input id="editTen" type="text" required>
+        </div>
+        <div>
+          <label for="editNguoi">Người làm</label>
+          <select id="editNguoi"></select>
+        </div>
+        <div>
+          <label for="editHan">Hạn chót</label>
+          <input id="editHan" type="date">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-danger push" id="editXoa">🗑️ Xoá việc này</button>
+        <button type="button" class="btn-ghost" id="editCancel">Huỷ</button>
+        <button type="submit" class="btn-primary">Lưu thay đổi</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= MODAL CÀI ĐẶT ================= -->
+<div class="backdrop" id="settingsBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle">Cài đặt</h2>
+
+    <h3>Thành viên trong nhà</h3>
+    <ul class="member-list" id="memberList"></ul>
+    <div class="member-add">
+      <input id="memberNew" type="text" placeholder="Thêm tên, ví dụ: Con 3">
+      <button type="button" class="btn-ghost" id="memberAdd">Thêm</button>
+    </div>
+
+    <h3>Đổi mã gia đình</h3>
+    <form id="doiMaForm" autocomplete="off">
+      <div class="grid">
+        <div>
+          <label for="maCu">Mã hiện tại</label>
+          <input id="maCu" type="password" required>
+        </div>
+        <div>
+          <label for="maMoi">Mã mới</label>
+          <input id="maMoi" type="password" required>
+        </div>
+        <div>
+          <label for="maMoi2">Nhập lại mã mới</label>
+          <input id="maMoi2" type="password" required>
+        </div>
+      </div>
+      <div class="row-actions">
+        <button type="submit" class="btn-primary">Đổi mã</button>
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" id="settingsCancel">Đóng</button>
+      <button type="button" class="btn-danger" id="logoutBtn">Đăng xuất</button>
+    </div>
+  </div>
+</div>
+
+<script src="demo-api.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     KHOÁ LƯU CACHE TRÊN MÁY NÀY (chỉ để xem khi mất mạng)
+     ========================================================= */
+  var KHOA_CACHE = "so-tay-viec-nha-cache-v2";
+  var KHOA_TEN   = "so-tay-viec-nha-ten";
+
+  /* =========================================================
+     TRẠNG THÁI GIAO DIỆN
+     ========================================================= */
+  var T = {
+    daDongNhap: false,
+    ten: "",
+    tenGiaDinh: "Nhà mình",
+    thanhVien: [],
+    viec: [],
+    boLoc: "all",      // all | todo | done
+    nguoiLoc: "",     // "" = tất cả
+    tuKhoa: "",
+    dangSua: null,
+    matKetNoi: false,
+    dangPoll: false
+  };
+
+  /* =========================================================
+     TIỆN ÍCH
+     ========================================================= */
+  function ngayHom(){
+    return dinhDang(new Date());
+  }
+  function ngayMai(){
+    var d = new Date(); d.setDate(d.getDate() + 1);
+    return dinhDang(d);
+  }
+  function dinhDang(d){
+    var m = String(d.getMonth() + 1), ng = String(d.getDate());
+    return d.getFullYear() + "-" + (m.length < 2 ? "0" + m : m) + "-" + (ng.length < 2 ? "0" + ng : ng);
+  }
+  function tachNgay(chuoi){
+    if(!chuoi) return null;
+    var p = chuoi.split("-");
+    return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+  }
+  function homNay(){
+    var d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+  function soNgay(a, b){
+    return Math.round((a - b) / 86400000);
+  }
+  function ngayHienThi(han){
+    var du = tachNgay(han);
+    if(!du) return "";
+    return String(du.getDate()).padStart(2,"0") + "/" +
+           String(du.getMonth()+1).padStart(2,"0") + "/" + du.getFullYear();
+  }
+  function anChuoi(s){
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  /* =========================================================
+     NỐI MÁY CHỦ
+     ========================================================= */
+  async function api(duong, option){
+    var opt = Object.assign({}, option || {});
+    opt.credentials = "same-origin";
+    opt.headers = Object.assign({ "Content-Type": "application/json" }, opt.headers || {});
+    if(opt.body && typeof opt.body !== "string") opt.body = JSON.stringify(opt.body);
+
+    var res;
+    try{
+      res = await fetch(duong, opt);
+    }catch(e){
+      var loi = new Error("Không kết nối được máy chủ. Hãy bật máy chủ (bat-chay.bat) rồi thử lại.");
+      loi.mang = true;
+      throw loi;
+    }
+
+    var duLieu = null;
+    try{ duLieu = await res.json(); }catch(e){ duLieu = null; }
+
+    if(!res.ok){
+      var loi2 = new Error((duLieu && duLieu.loi) || ("Máy chủ trả lời lỗi " + res.status));
+      loi2.status = res.status;
+      throw loi2;
+    }
+    return duLieu || {};
+  }
+
+  // Xử lý lỗi chung: mất mạng → hiện băng cảnh báo; 401 → quay lại màn hình đăng nhập.
+  function xuLyLoi(e){
+    if(e && e.status === 401){
+      T.daDongNhap = false;
+      hienLogin();
+      return;
+    }
+    if(e && e.mang){
+      T.matKetNoi = true;
+      hienBanner("Không kết nối được máy chủ. Đang hiện dữ liệu đã lưu trên máy này. Nhớ bật máy chủ (bat-chay.bat) nhé.", false);
+      return;
+    }
+    hienBanner((e && e.message) || "Có lỗi xảy ra.", true);
+  }
+
+  /* =========================================================
+     CACHE TRÊN MÁY (xem khi mất mạng)
+     ========================================================= */
+  function luuCache(){
+    try{ localStorage.setItem(KHOA_CACHE, JSON.stringify(T.viec)); }catch(e){}
+  }
+  function docCache(){
+    try{
+      var s = localStorage.getItem(KHOA_CACHE);
+      return s ? (JSON.parse(s) || []) : [];
+    }catch(e){ return []; }
+  }
+
+  /* =========================================================
+     THÀNH PHẦN
+     ========================================================= */
+  var elLoginWrap  = document.getElementById("loginWrap");
+  var elApp        = document.getElementById("app");
+  var elLoginForm = document.getElementById("loginForm");
+  var elLoginTen  = document.getElementById("loginTen");
+  var elLoginKhoa = document.getElementById("loginKhoa");
+  var elLoginErr  = document.getElementById("loginErr");
+  var elLoginBtn  = document.getElementById("loginBtn");
+  var elLoginSub  = document.getElementById("loginSub");
+  var elLoginRetryWrap = document.getElementById("loginRetryWrap");
+  var elBanner     = document.getElementById("banner");
+  var elBannerText = document.getElementById("bannerText");
+  var elList       = document.getElementById("list");
+  var elEmpty      = document.getElementById("empty");
+  var elEmptyTx    = document.getElementById("emptyText");
+  var elTabs       = document.getElementById("tabs");
+  var elSearch     = document.getElementById("search");
+  var elPerson     = document.getElementById("filterPerson");
+  var elProgTxt    = document.getElementById("progressText");
+  var elProgPct    = document.getElementById("progressPercent");
+  var elProgBar    = document.getElementById("progressBar");
+  var elBackdrop   = document.getElementById("backdrop");
+  var elSetBackdrop= document.getElementById("settingsBackdrop");
+  var elUserName   = document.getElementById("userName");
+  var elSyncDot    = document.getElementById("syncDot");
+
+  /* =========================================================
+     VẼ DANH SÁCH
+     ========================================================= */
+  function danhSachNguoi(){
+    // gồm thành viên trong nhà + mọi người đang xuất hiện trong dữ liệu
+    var ds = T.thanhVien.slice();
+    T.viec.forEach(function(v){
+      if(v.nguoi && ds.indexOf(v.nguoi) === -1) ds.push(v.nguoi);
+    });
+    if(T.nguoiLoc && ds.indexOf(T.nguoiLoc) === -1) ds.push(T.nguoiLoc);
+    return ds;
+  }
+
+  function dienTen(){
+    [document.getElementById("addNguoi"), document.getElementById("editNguoi"), elLoginTen].forEach(function(sel){
+      var giaTri = sel.value;
+      sel.innerHTML = "";
+      danhSachNguoi().forEach(function(ten){
+        var op = document.createElement("option");
+        op.value = ten; op.textContent = ten;
+        sel.appendChild(op);
+      });
+      if(sel === elLoginTen){
+        var nho = localStorage.getItem(KHOA_TEN);
+        if(nho) sel.value = nho;
+      }else{
+        sel.value = giaTri;
+      }
+    });
+    capNhatBoLocNguoi();
+  }
+
+  function capNhatBoLocNguoi(){
+    var ds = danhSachNguoi();
+    var hienTai = T.nguoiLoc;
+    elPerson.innerHTML = "";
+    var tatCa = document.createElement("option");
+    tatCa.value = ""; tatCa.textContent = "Tất cả người";
+    elPerson.appendChild(tatCa);
+    ds.forEach(function(ten){
+      var op = document.createElement("option");
+      op.value = ten; op.textContent = ten;
+      elPerson.appendChild(op);
+    });
+    elPerson.value = hienTai;
+  }
+
+  function trangThaiHan(han){
+    if(!han) return { lop:"", chu:"Chưa đặt hạn" };
+    var du = tachNgay(han);
+    if(!du) return { lop:"", chu:"Chưa đặt hạn" };
+    var c = soNgay(du, homNay());
+    if(c < 0)   return { lop:"late", chu:"Quá hạn " + (-c) + " ngày" };
+    if(c === 0) return { lop:"due",  chu:"Đến hạn hôm nay" };
+    if(c === 1) return { lop:"due",  chu:"Ngày mai" };
+    return { lop:"", chu:"Còn " + c + " ngày" };
+  }
+
+  function ve(){
+    capNhatBoLocNguoi();
+
+    // tiến độ
+    var tong = T.viec.length;
+    var xong = T.viec.filter(function(v){ return v.xong; }).length;
+    var pct = tong ? Math.round(xong / tong * 100) : 0;
+    elProgTxt.textContent = xong + " / " + tong + " việc đã xong";
+    elProgPct.textContent = pct + "%";
+    elProgBar.style.width = pct + "%";
+
+    // lọc
+    var ds = T.viec.filter(function(v){
+      if(T.boLoc === "todo" && v.xong) return false;
+      if(T.boLoc === "done" && !v.xong) return false;
+      if(T.nguoiLoc && v.nguoi !== T.nguoiLoc) return false;
+      if(T.tuKhoa){
+        var q = T.tuKhoa.toLowerCase();
+        if((v.ten + " " + v.nguoi).toLowerCase().indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    // Sắp xếp theo hạn chót. Việc đã xong vẫn giữ nguyên chỗ, không nhảy xuống cuối.
+    ds.sort(function(a,b){
+      var ta = tachNgay(a.han), tb = tachNgay(b.han);
+      if(!ta && !tb) return a.taoLuc - b.taoLuc;
+      if(!ta) return 1;
+      if(!tb) return -1;
+      if(ta.getTime() !== tb.getTime()) return ta - tb;
+      return a.taoLuc - b.taoLuc;
+    });
+
+    // vẽ danh sách
+    elList.innerHTML = ds.map(function(v){
+      var tt = trangThaiHan(v.han);
+      var lop = "task" + (v.xong ? " is-done" : "") + (tt.lop === "late" ? " is-overdue" : "");
+      var hanText = v.han ? "Hạn " + ngayHienThi(v.han) : "";
+      var meta = [];
+      var badgeTrangThai, badgeHan = "";
+
+      if(v.xong){
+        // Đã xong: chỉ hiện nhãn xanh, không hiện thêm cảnh báo hạn chót
+        badgeTrangThai = '<span class="badge done">Đã xong</span>';
+        var dong = "✓ Xong lúc " + ngayHienThi(dinhDang(new Date(v.xongLuc)));
+        if(v.xongBy) dong += " · bởi " + anChuoi(v.xongBy);
+        meta.push('<span>' + anChuoi(dong) + '</span>');
+      }else{
+        badgeTrangThai = '<span class="badge todo">Chưa làm</span>';
+        if(tt.lop === "late")      badgeHan = '<span class="badge late">' + anChuoi(tt.chu) + '</span>';
+        else if(tt.lop === "due") badgeHan = '<span class="badge due">'  + anChuoi(tt.chu) + '</span>';
+        else meta.push('<span>' + anChuoi(tt.chu) + '</span>');
+      }
+
+      return '<li class="' + lop + '" data-id="' + anChuoi(v.id) + '">' +
+        '<button type="button" class="check" data-hanh="toggle" aria-label="Đánh dấu đã xong">' +
+          (v.xong ? "✓" : "") +
+        '</button>' +
+        '<div class="body">' +
+          '<div class="name">' + anChuoi(v.ten) + '</div>' +
+          '<div class="meta">' +
+            (v.nguoi ? '<span class="who">👤 ' + anChuoi(v.nguoi) + '</span>' : "") +
+            (hanText ? '<span>⏰ ' + anChuoi(hanText) + '</span>' : "") +
+            meta.join("") +
+          '</div>' +
+        '</div>' +
+        '<div class="badges">' + badgeTrangThai + badgeHan + '</div>' +
+        '<div class="tools">' +
+          '<button type="button" class="sua" data-hanh="edit" aria-label="Sửa việc">✏️ Sửa</button>' +
+          '<button type="button" class="xoa" data-hanh="delete" aria-label="Xoá việc">🗑️ Xoá</button>' +
+        '</div>' +
+      '</li>';
+    }).join("");
+
+    // ô trống
+    if(ds.length === 0){
+      elEmpty.hidden = false;
+      elEmptyTx.textContent = tong === 0
+        ? "Chưa có việc nào. Thêm việc đầu tiên ở ô phía trên nhé."
+        : "Không có việc nào khớp với bộ lọc hiện tại.";
+    }else{
+      elEmpty.hidden = true;
+    }
+  }
+
+  /* =========================================================
+     BĂNG CẢNH BÁO
+     ========================================================= */
+  function hienBanner(text, nghiêmTrong){
+    elBannerText.textContent = text;
+    elBanner.className = "banner" + (nghiêmTrong ? " bad" : "");
+    elBanner.hidden = false;
+  }
+  function anBanner(){
+    elBanner.hidden = true;
+    T.matKetNoi = false;
+    elSyncDot.className = "dot";
+  }
+
+  /* =========================================================
+     MÀN HÌNH ĐĂNG NHẬP / VÀO SỔ TAY
+     ========================================================= */
+  function hienLogin(){
+    elApp.hidden = true;
+    elLoginWrap.hidden = false;
+    elLoginErr.hidden = true;
+    elLoginKhoa.value = "";
+    dienTen();
+    elLoginTen.focus();
+  }
+
+  async function vaoSoTay(){
+    elApp.hidden = false;
+    elLoginWrap.hidden = true;
+    elUserName.textContent = T.ten;
+    await napViec();
+    dienTen();
+    ve();
+  }
+
+  // Lấy danh sách việc từ máy chủ (dùng cả khi tự động làm mới)
+  async function napViec(){
+    var du = await api("/api/viec");
+    T.viec = du.viec || [];
+    luuCache();
+    anBanner();
+    return T.viec;
+  }
+
+  async function khoiDong(){
+    try{
+      var k = await api("/api/khoi-dong");
+      T.tenGiaDinh = k.tenGiaDinh || "Nhà mình";
+      T.thanhVien = k.thanhVien || [];
+      T.daDongNhap = !!k.daDongNhap;
+      T.ten = k.ten || "";
+      dienTen();
+      if(T.daDongNhap){
+        await vaoSoTay();
+      }else{
+        hienLogin();
+      }
+    }catch(e){
+      // Không gọi được máy chủ: cho xem bản cache trên máy này, và báo lỗi.
+      T.viec = docCache();
+      elLoginSub.textContent = "Chưa kết nối được máy chủ. Bật máy chủ trước rồi thử lại nhé.";
+      elLoginRetryWrap.hidden = false;
+      elLoginErr.hidden = false;
+      elLoginErr.textContent = (e && e.message) || "Không kết nối được máy chủ.";
+      hienLogin();
+    }
+  }
+
+  elLoginForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+    elLoginBtn.disabled = true;
+    elLoginBtn.textContent = "Đang vào...";
+    elLoginErr.hidden = true;
+    try{
+      var ten = elLoginTen.value;
+      var du = await api("/api/dang-nhap", { method:"POST", body:{ ten: ten, khoa: elLoginKhoa.value } });
+      T.ten = du.ten || ten;
+      T.daDongNhap = true;
+      try{ localStorage.setItem(KHOA_TEN, T.ten); }catch(e){}
+      await vaoSoTay();
+    }catch(e2){
+      elLoginErr.hidden = false;
+      elLoginErr.textContent = (e2 && e2.message) || "Đăng nhập không thành công.";
+      elLoginKhoa.value = "";
+      elLoginKhoa.focus();
+    }finally{
+      elLoginBtn.disabled = false;
+      elLoginBtn.textContent = "Vào sổ tay";
+    }
+  });
+
+  document.getElementById("loginRetry").addEventListener("click", function(){
+    elLoginErr.hidden = true;
+    elLoginSub.textContent = "Chọn tên của bạn và nhập mã gia đình để vào.";
+    khoiDong();
+  });
+
+  /* =========================================================
+     TỰ ĐỒNG BỘ (kiểm tra máy chủ mỗi 5 giây)
+     ========================================================= */
+  setInterval(async function(){
+    if(!T.daDongNhap || T.dangPoll) return;
+    if(document.hidden) return;         // tab đang ẩn thì khỏi hỏi
+    T.dangPoll = true;
+    try{
+      var moi = (await api("/api/viec")).viec || [];
+      if(JSON.stringify(moi) !== JSON.stringify(T.viec)){
+        T.viec = moi;
+        luuCache();
+        ve();
+      }else{
+        anBanner();
+      }
+    }catch(e){
+      xuLyLoi(e);
+    }finally{
+      T.dangPoll = false;
+    }
+  }, 5000);
+
+  document.getElementById("bannerRetry").addEventListener("click", async function(){
+    try{
+      await napViec();
+      ve();
+    }catch(e){
+      xuLyLoi(e);
+    }
+  });
+
+  /* =========================================================
+     HÀNH ĐỘNG VỚI VIỆC
+     ========================================================= */
+  function tim(id){
+    for(var i=0;i<T.viec.length;i++) if(T.viec[i].id === id) return T.viec[i];
+    return null;
+  }
+
+  async function doiTrangThai(id){
+    var v = tim(id);
+    if(!v) return;
+    var moiXong = !v.xong;
+    try{
+      await api("/api/viec/" + encodeURIComponent(id), { method:"PATCH", body:{ xong: moiXong } });
+      await napViec();
+      ve();
+    }catch(e){ xuLyLoi(e); }
+  }
+
+  async function xoaVi(id, dongHoiThem){
+    var v = tim(id);
+    if(!v) return;
+    var ten = v.ten;
+    if(!confirm('Xoá việc "' + ten + '"?\n\nViệc này sẽ mất vĩnh viễn, không xem lại được.')) return;
+    if(dongHoiThem) dongModal();
+    try{
+      await api("/api/viec/" + encodeURIComponent(id), { method:"DELETE" });
+      await napViec();
+      ve();
+    }catch(e){
+      // 404 = người khác trong nhà đã xoá trước đó → chỉ cần vẽ lại danh sách.
+      if(e && e.status === 404){
+        await napViec();
+        ve();
+        hienBanner('Việc "' + ten + '" đã bị xoá trước đó (có thể do người khác trong nhà xoá).', false);
+        return;
+      }
+      xuLyLoi(e);
+    }
+  }
+
+  /* --- Thêm việc --- */
+  document.getElementById("addForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var ten = document.getElementById("addTen").value.trim();
+    if(!ten) return;
+    try{
+      await api("/api/viec", {
+        method:"POST",
+        body:{
+          ten: ten,
+          nguoi: document.getElementById("addNguoi").value,
+          han: document.getElementById("addHan").value
+        }
+      });
+      document.getElementById("addTen").value = "";
+      await napViec();
+      ve();
+      document.getElementById("addTen").focus();
+    }catch(e2){ xuLyLoi(e2); }
+  });
+
+  /* --- Bấm trong danh sách --- */
+  elList.addEventListener("click", function(e){
+    var nut = e.target.closest("button[data-hanh]");
+    var li  = e.target.closest("li[data-id]");
+    if(!li) return;
+    var id = li.getAttribute("data-id");
+    var hanh = nut ? nut.getAttribute("data-hanh") : "toggle";
+    if(hanh === "toggle") doiTrangThai(id);
+    else if(hanh === "edit") moModal(id);
+    else if(hanh === "delete") xoaVi(id);
+  });
+
+  elList.addEventListener("keydown", function(e){
+    if(e.key !== "Enter" && e.key !== " ") return;
+    var li = e.target.closest("li[data-id]");
+    if(!li || e.target.closest("button")) return;
+    e.preventDefault();
+    doiTrangThai(li.getAttribute("data-id"));
+  });
+
+  /* --- Bộ lọc --- */
+  elTabs.addEventListener("click", function(e){
+    var b = e.target.closest("button[data-filter]");
+    if(!b) return;
+    T.boLoc = b.getAttribute("data-filter");
+    Array.prototype.forEach.call(elTabs.querySelectorAll("button"), function(x){
+      x.classList.toggle("active", x === b);
+    });
+    ve();
+  });
+  elSearch.addEventListener("input", function(){ T.tuKhoa = elSearch.value.trim(); ve(); });
+  elPerson.addEventListener("change", function(){ T.nguoiLoc = elPerson.value; ve(); });
+
+  /* =========================================================
+     MODAL SỬA VIỆC
+     ========================================================= */
+  function damBaoCoOption(sel, giaTri){
+    if(!giaTri) return;
+    var co = false;
+    for(var i=0;i<sel.options.length;i++){
+      if(sel.options[i].value === giaTri){ co = true; break; }
+    }
+    if(!co){
+      var op = document.createElement("option");
+      op.value = giaTri; op.textContent = giaTri;
+      sel.appendChild(op);
+    }
+    sel.value = giaTri;
+  }
+
+  function moModal(id){
+    var v = tim(id);
+    if(!v) return;
+    T.dangSua = id;
+    document.getElementById("modalTitle").textContent = "Sửa việc";
+    document.getElementById("editTen").value = v.ten;
+    damBaoCoOption(document.getElementById("editNguoi"), v.nguoi);
+    document.getElementById("editHan").value = v.han;
+    elBackdrop.hidden = false;
+    document.getElementById("editTen").focus();
+  }
+  function dongModal(){
+    T.dangSua = null;
+    elBackdrop.hidden = true;
+  }
+  document.getElementById("editCancel").addEventListener("click", dongModal);
+  document.getElementById("editXoa").addEventListener("click", function(){
+    if(!T.dangSua) return;
+    xoaVi(T.dangSua, true);
+  });
+  elBackdrop.addEventListener("click", function(e){
+    if(e.target === elBackdrop) dongModal();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      if(!elBackdrop.hidden) dongModal();
+      if(!elSetBackdrop.hidden) dongModalCaiDat();
+    }
+  });
+  document.getElementById("editForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    if(!T.dangSua) return;
+    var id = T.dangSua;
+    try{
+      await api("/api/viec/" + encodeURIComponent(id), {
+        method:"PATCH",
+        body:{
+          ten: document.getElementById("editTen").value.trim(),
+          nguoi: document.getElementById("editNguoi").value,
+          han: document.getElementById("editHan").value
+        }
+      });
+      dongModal();
+      await napViec();
+      ve();
+    }catch(e2){ xuLyLoi(e2); }
+  });
+
+  /* =========================================================
+     CÀI ĐẶT: thành viên + đổi mã + đăng xuất
+     ========================================================= */
+  function veThanhVien(){
+    var ul = document.getElementById("memberList");
+    ul.innerHTML = "";
+    T.thanhVien.forEach(function(ten){
+      var li = document.createElement("li");
+      li.innerHTML = '<span>👤 ' + anChuoi(ten) + '</span><span class="spacer"></span>';
+      var nut = document.createElement("button");
+      nut.type = "button";
+      nut.textContent = "✕";
+      nut.title = "Xoá " + ten;
+      nut.addEventListener("click", async function(){
+        if(!confirm('Xoá "' + ten + '" khỏi danh sách thành viên?\n(Việc đã giao cho người này vẫn giữ nguyên tên.)')) return;
+        try{
+          var du = await api("/api/thanh-vien/" + encodeURIComponent(ten), { method:"DELETE" });
+          T.thanhVien = du.thanhVien || [];
+          veThanhVien();
+          dienTen();
+          ve();
+        }catch(e){ xuLyLoi(e); }
+      });
+      li.appendChild(nut);
+      ul.appendChild(li);
+    });
+  }
+
+  function moCaiDat(){
+    veThanhVien();
+    elSetBackdrop.hidden = false;
+  }
+  function dongModalCaiDat(){
+    elSetBackdrop.hidden = true;
+  }
+
+  document.getElementById("settingBtn").addEventListener("click", moCaiDat);
+  document.getElementById("settingsCancel").addEventListener("click", dongModalCaiDat);
+  elSetBackdrop.addEventListener("click", function(e){
+    if(e.target === elSetBackdrop) dongModalCaiDat();
+  });
+
+  document.getElementById("memberAdd").addEventListener("click", async function(){
+    var ten = document.getElementById("memberNew").value.trim();
+    if(!ten) return;
+    try{
+      var du = await api("/api/thanh-vien", { method:"POST", body:{ ten: ten } });
+      T.thanhVien = du.thanhVien || [];
+      document.getElementById("memberNew").value = "";
+      veThanhVien();
+      dienTen();
+    }catch(e){ xuLyLoi(e); }
+  });
+
+  document.getElementById("doiMaForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var maMoi  = document.getElementById("maMoi").value;
+    var maMoi2 = document.getElementById("maMoi2").value;
+    if(maMoi !== maMoi2){
+      alert("Hai ô mã mới không giống nhau.");
+      return;
+    }
+    try{
+      await api("/api/doi-ma-gia-dinh", { method:"POST", body:{ maCu: document.getElementById("maCu").value, maMoi: maMoi } });
+      document.getElementById("maCu").value = "";
+      document.getElementById("maMoi").value = "";
+      document.getElementById("maMoi2").value = "";
+      alert("Đã đổi mã gia đình. Nhớ báo các máy khác dùng mã mới nhé.");
+    }catch(e2){ alert((e2 && e2.message) || "Đổi mã không thành công."); }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", async function(){
+    try{ await api("/api/dang-xuat", { method:"POST" }); }catch(e){}
+    T.daDongNhap = false;
+    dongModalCaiDat();
+    hienLogin();
+  });
+
+  /* --- Khôi phục mẫu --- */
+  document.getElementById("resetBtn").addEventListener("click", async function(){
+    if(!confirm("Xoá danh sách hiện tại và đưa 3 việc mẫu trở lại?")) return;
+    try{
+      await api("/api/khoi-phuc-mau", { method:"POST" });
+      await napViec();
+      ve();
+    }catch(e){ xuLyLoi(e); }
+  });
+
+  /* =========================================================
+     KHỞI ĐỘNG
+     ========================================================= */
+  document.getElementById("addHan").value = ngayHom();
+  khoiDong();
+})();
+</script>
+</body>
+</html>
